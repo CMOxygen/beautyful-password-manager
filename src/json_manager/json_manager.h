@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <sys/stat.h>
 
 #include "../../lib/nlohmann/json.hpp"
 
@@ -39,9 +40,18 @@ public:
     JsonManager();
     ~JsonManager();
 
-    static void setHomeDir(const std::string &path);
+    static void setHome(const std::string &path);
 
-    inline static std::string getHomeDir() { return homeDir; }
+    inline static std::string home() { return homeDir; }
 
-    static void readJSON(const std::string &path);
+    static void JsonManagerTest();
+
+    static bool fileExists(const std::string &path);
+
+    static json readFile(const std::string &path);
+
+    static void inFile(const std::string &path, json tree);
+
+    static User jsonToUser(const json in);
+    static json userToJson(const User u);
 };

@@ -10,51 +10,70 @@ JsonManager::~JsonManager()
 {
 }
 
-void JsonManager::setHomeDir(const std::string &path)
+void JsonManager::setHome(const std::string &path)
 {
     if (!path.empty() > 0)
         homeDir = path;
 }
 
-void JsonManager::readJSON(const std::string &path)
+void JsonManager::JsonManagerTest()
 {
-    std::ifstream f(path);
-    json data = json::parse(f);
-    std::cout << std::setw(4) << data << std::endl;
-
-    // UserType t = UserType::ADMIN;
-
-    // switch (t)
-    // {
-    // case UserType::ADMIN:
-    //     std::cout << "kaef\n";
-    //     break;
-    // case UserType::CHELYAD:
-    //     std::cout << "ne kaef\n";
-    //     break;
-
-    // default:
-    //     break;
-    // }
-
-    User dbg_user = {data["username"], data["pass"], data["type"]};
-
-    std::cout << dbg_user.username << "\t" << dbg_user.pass << std::endl;
-
-    switch (dbg_user.type)
+    std::string path = JsonManager::home() + "/data/dbg_user.json";
+    if (JsonManager::fileExists(path))
     {
-    case UserType::ADMIN:
-        std::cout << "ADMIN" << std::endl;
-        break;
+        User u = JsonManager::jsonToUser(JsonManager::readFile(path));
+        u.data.push_back(StoredPassword{"pass", "qwerty12345"});
 
-    case UserType::CHELYAD:
-        std::cout << "CHELYAD" << std::endl;
-        break;
-    default:
-        break;
+        JsonManager::inFile(path, JsonManager::userToJson(u));
     }
+}
 
-    dbg_user.data.push_back(StoredPassword{"SUPER PAROL", "12345"});
+bool JsonManager::fileExists(const std::string &path)
+{
+    struct stat buffer;
+    return (stat(path.c_str(), &buffer) == 0);
+}
 
-    f.close();
+User JsonManager::jsonToUser(const json in)
+{
+    User u = {in["username"], in["pass"], in["type"], std::vector<StoredPassword>()};
+
+    for (auto p : in["data"])
+    {
+        u.data.push_back(StoredPassword{p["name"], p["value"]});
+    }
+    return u;
+}
+
+json JsonManager::userToJson(const User u)
+{
+    json data = {
+        {"username", u.username},
+        {"pass", u.pass},
+        {"type", u.type},
+    };
+
+    for (int i = 0; i < u.data.size(); i++)
+    {
+        data["data"][i] = {
+            {"name", u.data[i].name},
+            {"value", u.data[i].value}};
+    }
+    return data;
+}
+
+json JsonManager::readFile(const std::string &path)
+{
+    std::ifstream File(path);
+    json data = json::parse(File);
+    File.close();
+
+    return data;
+}
+
+void JsonManager::inFile(const std::string &path, json tree)
+{
+    std::ofstream O_File(path);
+    O_File << std::setw(4) << tree;
+    O_File.close();
 }
