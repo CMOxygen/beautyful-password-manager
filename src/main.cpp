@@ -16,12 +16,8 @@ int main(int argc, char **argv)
     std::cout << homeDir << std::endl;
     // std::cout << homeDir.erase(pos + 1, homeDir.length()) << std::endl;
 
-    JsonManager::setHomeDir(homeDir);
-    std::cout << JsonManager::getHomeDir() << std::endl;
+    JsonManager::setHome(homeDir);
+    std::cout << JsonManager::home() << std::endl;
 
-    // std::ofstream f(JsonManager::getHomeDir() + "data/text.txt");
-    // f << "ZHOPA";
-    // f.close();
-
-    JsonManager::readJSON(JsonManager::getHomeDir()+"data/dbg_user.json");
+    JsonManager::JsonManagerTest();
 }
