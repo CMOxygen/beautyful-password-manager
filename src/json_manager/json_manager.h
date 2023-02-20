@@ -1,34 +1,24 @@
+/*
+    JsonManager class designed to realise store application data in JSON files.
+    It represents API based on nlohmann/json library: https://github.com/nlohmann/json .
+
+    Feature list:
+        1. Convert object's data into json objects.
+        2. Convert json objects into object's data.
+        3. Write JSON files from json objects.
+        4. Read JSON files to json objects.
+*/
+
+#pragma once
+
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <sys/stat.h>
+#include <algorithm>
 
 #include "../../lib/nlohmann/json.hpp"
-
-enum class UserType
-{
-    ADMIN,
-    CHELYAD
-};
-
-NLOHMANN_JSON_SERIALIZE_ENUM(UserType, {{UserType::ADMIN, "ADMIN"},
-                                        {UserType::CHELYAD, "CHELYAD"}})
-
-struct StoredPassword
-{
-    std::string name;
-    std::string value;
-};
-
-struct User
-{
-    std::string username;
-    std::string pass;
-    UserType type;
-
-    std::vector<StoredPassword> data;
-};
 
 using json = nlohmann::json;
 
@@ -37,21 +27,16 @@ class JsonManager
     static std::string homeDir;
 
 public:
+    //  constructors/destructors
     JsonManager();
     ~JsonManager();
 
+    //  getters/setters
     static void setHome(const std::string &path);
+    inline static std::string getHome() { return homeDir; }
 
-    inline static std::string home() { return homeDir; }
-
-    static void JsonManagerTest();
-
+    // file IO methods
     static bool fileExists(const std::string &path);
-
     static json readFile(const std::string &path);
-
     static void inFile(const std::string &path, json tree);
-
-    static User jsonToUser(const json in);
-    static json userToJson(const User u);
 };

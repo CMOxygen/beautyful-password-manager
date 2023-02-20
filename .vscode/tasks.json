@@ -1,0 +1,37 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: g++.exe сборка активного файла",
+			"command": "C:\\msys64\\mingw64\\bin\\g++.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				// main project file
+				"${workspaceFolder}\\src\\main.cpp",
+				// src class files
+				"${workspaceFolder}\\src\\console_ui\\*.cpp",
+				"${workspaceFolder}\\src\\json_manager\\*.cpp",
+				"${workspaceFolder}\\src\\user_service\\*.cpp",
+				"${workspaceFolder}\\src\\data_models\\*.hpp",
+				// test files
+				// "${workspaceFolder}\\src\\test_benchmark\\*.hpp",
+				"${workspaceFolder}\\src\\test_unit\\*.hpp",
+				"-o",
+				"${workspaceFolder}\\bin\\bpm.exe"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "компилятор: C:\\msys64\\mingw64\\bin\\g++.exe"
+		}
+	]
+}

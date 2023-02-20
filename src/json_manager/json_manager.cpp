@@ -1,4 +1,4 @@
-#include "json_manager.h"
+#include "../data_models/data_models.hpp"
 
 std::string JsonManager::homeDir = "";
 
@@ -16,50 +16,10 @@ void JsonManager::setHome(const std::string &path)
         homeDir = path;
 }
 
-void JsonManager::JsonManagerTest()
-{
-    std::string path = JsonManager::home() + "/data/dbg_user.json";
-    if (JsonManager::fileExists(path))
-    {
-        User u = JsonManager::jsonToUser(JsonManager::readFile(path));
-        u.data.push_back(StoredPassword{"pass", "qwerty12345"});
-
-        JsonManager::inFile(path, JsonManager::userToJson(u));
-    }
-}
-
 bool JsonManager::fileExists(const std::string &path)
 {
     struct stat buffer;
     return (stat(path.c_str(), &buffer) == 0);
-}
-
-User JsonManager::jsonToUser(const json in)
-{
-    User u = {in["username"], in["pass"], in["type"], std::vector<StoredPassword>()};
-
-    for (auto p : in["data"])
-    {
-        u.data.push_back(StoredPassword{p["name"], p["value"]});
-    }
-    return u;
-}
-
-json JsonManager::userToJson(const User u)
-{
-    json data = {
-        {"username", u.username},
-        {"pass", u.pass},
-        {"type", u.type},
-    };
-
-    for (int i = 0; i < u.data.size(); i++)
-    {
-        data["data"][i] = {
-            {"name", u.data[i].name},
-            {"value", u.data[i].value}};
-    }
-    return data;
 }
 
 json JsonManager::readFile(const std::string &path)

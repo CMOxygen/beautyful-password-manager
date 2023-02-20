@@ -1,4 +1,5 @@
-#include "json_manager/json_manager.h"
+#include "test_unit/test_json_manager.hpp"
+// #include "user_service/user_service.h"
 
 #include <iostream>
 #include <fstream>
@@ -17,7 +18,7 @@ int main(int argc, char **argv)
     // std::cout << homeDir.erase(pos + 1, homeDir.length()) << std::endl;
 
     JsonManager::setHome(homeDir);
-    std::cout << JsonManager::home() << std::endl;
+    std::cout << JsonManager::getHome() << std::endl;
 
-    JsonManager::JsonManagerTest();
+    UnitTests::JsonManagerTest::testToJson();
 }

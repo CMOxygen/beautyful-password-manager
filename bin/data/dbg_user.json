@@ -1,0 +1,15 @@
+{
+    "data": [
+        {
+            "name": "pass",
+            "value": "qwerty12345"
+        },
+        {
+            "name": "pass2",
+            "value": "qwerty123456789"
+        }
+    ],
+    "pass": "dbg_pass",
+    "type": "ADMIN",
+    "username": "dbg_user"
+}
